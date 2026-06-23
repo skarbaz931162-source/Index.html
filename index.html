@@ -3,64 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CN Ludo - Play & Earn Master</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>CN Ludo - Fixed</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
+        body { background-color: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .btn-fix { position: relative; z-index: 999; cursor: pointer; padding: 15px; margin: 10px; width: 200px; }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen" class="flex flex-col items-center justify-center min-h-screen px-4">
-        <div class="bg-slate-900 border border-amber-500/30 rounded-2xl shadow-2xl p-8 w-full max-w-md text-center">
-            <h1 class="text-4xl font-extrabold text-amber-500 mb-6">CN LUDO</h1>
-            <input type="text" id="username" placeholder="Username" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 mb-4 text-white">
-            <input type="password" id="password" placeholder="Password" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 mb-4 text-white">
-            
-            <button id="login-btn" onclick="handleLogin()" class="w-full bg-amber-500 py-3 rounded-xl font-bold mb-2 text-black cursor-pointer">Login</button>
-            <button id="register-btn" onclick="handleRegister()" class="w-full bg-slate-800 border border-slate-600 py-3 rounded-xl text-white cursor-pointer">Create Account</button>
-        </div>
+    <div style="text-align: center; background: #1e293b; padding: 30px; border-radius: 20px;">
+        <h1 style="color: gold;">CN LUDO TEST</h1>
+        <input type="text" id="username" placeholder="Username" style="padding: 10px; display: block; margin: 10px auto;">
+        <input type="password" id="password" placeholder="Password" style="padding: 10px; display: block; margin: 10px auto;">
+        
+        <button id="login-btn" class="btn-fix" style="background: gold;">LOGIN</button>
+        <button id="register-btn" class="btn-fix" style="background: white;">REGISTER</button>
     </div>
 
     <script>
-        // Supabase Initialization
-        const supabaseUrl = 'https://pubntihxkdwrgxaqumtj.supabase.co';
-        const supabaseKey = 'sb_publishable_TzLg10jeLU6J8-wYsJ4oYg_UZL6iWgs';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabase = supabase.createClient('https://pubntihxkdwrgxaqumtj.supabase.co', 'sb_publishable_TzLg10jeLU6J8-wYsJ4oYg_UZL6iWgs');
 
-        // Login Function
-        async function handleLogin() {
+        document.getElementById('login-btn').onclick = async () => {
+            alert("Login daba diya!");
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            if(!user || !pass) return alert("Please enter details!");
-
             const { data, error } = await supabase.from('users').select('*').eq('username', user).eq('password', pass);
-            
-            if (error) {
-                alert("Error: " + error.message);
-            } else if (data && data.length > 0) {
-                alert("Login Successful!");
-                document.getElementById('auth-screen').style.display = 'none';
-            } else {
-                alert("Invalid Username or Password!");
-            }
-        }
+            if (error) alert(error.message);
+            else if (data.length > 0) alert("Login Successful!");
+            else alert("Invalid User!");
+        };
 
-        // Register Function
-        async function handleRegister() {
+        document.getElementById('register-btn').onclick = async () => {
+            alert("Register daba diya!");
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            if(!user || !pass) return alert("Please enter details!");
-
             const { error } = await supabase.from('users').insert([{ username: user, password: pass }]);
-            
-            if (error) {
-                alert("Error: " + error.message);
-            } else {
-                alert("Account Created Successfully! Now Login.");
-            }
-        }
+            if (error) alert(error.message);
+            else alert("Account Created!");
+        };
     </script>
 </body>
 </html>
