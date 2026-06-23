@@ -8,23 +8,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
-        .ludo-grid { display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(15, 1fr); width: 100%; aspect-ratio: 1; max-width: 380px; margin: 0 auto; border: 4px solid #1e293b; background-color: #fff; }
     </style>
 </head>
 <body>
+
     <div id="auth-screen" class="flex flex-col items-center justify-center min-h-screen px-4">
         <div class="bg-slate-900 border border-amber-500/30 rounded-2xl shadow-2xl p-8 w-full max-w-md text-center">
             <h1 class="text-4xl font-extrabold text-amber-500 mb-6">CN LUDO</h1>
             <input type="text" id="username" placeholder="Username" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 mb-4 text-white">
             <input type="password" id="password" placeholder="Password" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 mb-4 text-white">
-            <button id="login-btn" class="w-full bg-amber-500 py-3 rounded-xl font-bold mb-2 text-black cursor-pointer">Login</button>
-            <button id="register-btn" class="w-full bg-slate-800 border border-slate-600 py-3 rounded-xl text-white cursor-pointer">Create Account</button>
+            
+            <button id="login-btn" onclick="handleLogin()" class="w-full bg-amber-500 py-3 rounded-xl font-bold mb-2 text-black cursor-pointer">Login</button>
+            <button id="register-btn" onclick="handleRegister()" class="w-full bg-slate-800 border border-slate-600 py-3 rounded-xl text-white cursor-pointer">Create Account</button>
         </div>
-    </div>
-
-    <div id="dashboard-screen" class="hidden min-h-screen flex flex-col items-center justify-center text-white">
-        <h1 class="text-3xl font-bold text-amber-500">Welcome to CN Ludo!</h1>
-        <p>Login successful, dashboard loading...</p>
     </div>
 
     <script>
@@ -33,36 +29,38 @@
         const supabaseKey = 'sb_publishable_TzLg10jeLU6J8-wYsJ4oYg_UZL6iWgs';
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Register Function
-        document.getElementById('register-btn').addEventListener('click', async () => {
+        // Login Function
+        async function handleLogin() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            if(!user || !pass) return alert("Enter details!");
+            if(!user || !pass) return alert("Please enter details!");
+
+            const { data, error } = await supabase.from('users').select('*').eq('username', user).eq('password', pass);
+            
+            if (error) {
+                alert("Error: " + error.message);
+            } else if (data && data.length > 0) {
+                alert("Login Successful!");
+                document.getElementById('auth-screen').style.display = 'none';
+            } else {
+                alert("Invalid Username or Password!");
+            }
+        }
+
+        // Register Function
+        async function handleRegister() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if(!user || !pass) return alert("Please enter details!");
 
             const { error } = await supabase.from('users').insert([{ username: user, password: pass }]);
-            if (error) alert("Error: " + error.message);
-            else alert("Account Created! Now login.");
-        });
-
-        // Login Function
-        document.getElementById('login-btn').addEventListener('click', async () => {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
             
-            const { data, error } = await supabase.from('users')
-                .select('*')
-                .eq('username', user)
-                .eq('password', pass);
-
-            if (error) alert("Error: " + error.message);
-            else if (data && data.length > 0) {
-                alert("Login Successful!");
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('dashboard-screen').classList.remove('hidden');
+            if (error) {
+                alert("Error: " + error.message);
             } else {
-                alert("Invalid Login!");
+                alert("Account Created Successfully! Now Login.");
             }
-        });
+        }
     </script>
 </body>
 </html>
