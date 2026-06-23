@@ -3,51 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CN Ludo - Final Test</title>
+    <title>CN Ludo - Final</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #0f172a; color: white; }
+        input { margin: 10px; padding: 15px; width: 250px; color: black; }
+        button { padding: 15px 30px; margin: 10px; cursor: pointer; font-size: 16px; font-weight: bold; }
+    </style>
 </head>
 <body>
+
+    <h1>CN LUDO</h1>
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
     
-    <button id="login-btn" style="padding: 20px; background: gold;">LOGIN</button>
-    <button id="register-btn" style="padding: 20px; background: white;">REGISTER</button>
+    <button id="login">LOGIN</button>
+    <button id="register">REGISTER</button>
 
     <script>
-        console.log("Script load ho gaya hai!");
+        // Supabase Initialization
         const supabase = supabase.createClient('https://pubntihxkdwrgxaqumtj.supabase.co', 'sb_publishable_TzLg10jeLU6J8-wYsJ4oYg_UZL6iWgs');
 
-        document.getElementById('register-btn').addEventListener('click', async () => {
-            console.log("Register button daba!");
+        document.getElementById('register').addEventListener('click', async () => {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            
-            if(!user || !pass) return alert("Username aur Password dono daalo!");
-
             const { error } = await supabase.from('users').insert([{ username: user, password: pass }]);
-            
-            if (error) {
-                console.error("Supabase Error:", error);
-                alert("Error: " + error.message);
-            } else {
-                alert("Account Created Successfully!");
-            }
+            if (error) alert("Error: " + error.message);
+            else alert("Account Created!");
         });
 
-        document.getElementById('login-btn').addEventListener('click', async () => {
-            console.log("Login button daba!");
+        document.getElementById('login').addEventListener('click', async () => {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            
             const { data, error } = await supabase.from('users').select('*').eq('username', user).eq('password', pass);
-            
-            if (error) {
-                alert("Error: " + error.message);
-            } else if (data && data.length > 0) {
-                alert("Login Successful!");
-            } else {
-                alert("Galat username ya password!");
-            }
+            if (error) alert("Error: " + error.message);
+            else if (data.length > 0) alert("Login Successful!");
+            else alert("Login Failed!");
         });
     </script>
 </body>
