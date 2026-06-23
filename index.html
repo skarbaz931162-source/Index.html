@@ -1,95 +1,37 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CN FIBER NET PORTAL</title>
-    <!-- Supabase Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { 
-            background: #0f172a; 
-            color: white; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            margin: 0; 
-            font-family: sans-serif;
-        }
-        .container {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 20px;
-            width: 85%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
-        h2 { margin-bottom: 20px; color: gold; }
-        input { 
-            padding: 15px; 
-            margin: 10px 0; 
-            width: 100%; 
-            border-radius: 10px; 
-            border: none; 
-            box-sizing: border-box;
-        }
-        button { 
-            padding: 15px; 
-            margin: 10px 0; 
-            width: 100%; 
-            border-radius: 10px; 
-            border: none; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 16px;
-        }
+        body { background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: sans-serif; }
+        .box { background: #1e293b; padding: 30px; border-radius: 20px; width: 85%; text-align: center; }
+        input { padding: 15px; margin: 10px 0; width: 100%; border-radius: 10px; border: none; box-sizing: border-box; }
+        button { padding: 15px; margin: 10px 0; width: 100%; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
         #login { background: gold; color: black; }
         #register { background: white; color: black; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h2>CN FIBER NET</h2>
-        <input type="text" id="u" placeholder="Enter Username">
-        <input type="password" id="p" placeholder="Enter Password">
-        
+    <div class="box">
+        <h2>CN LUDO LOGIN</h2>
+        <input type="text" id="u" placeholder="Username">
+        <input type="password" id="p" placeholder="Password">
         <button id="login">LOGIN</button>
         <button id="register">REGISTER</button>
     </div>
-
     <script>
-        // Supabase Client Initialization
         const sb = supabase.createClient('https://pubntihxkdwrgxaqumtj.supabase.co', 'sb_publishable_TzLg10jeLU6J8-wYsJ4oYg_UZL6iWgs');
-
-        // Registration Logic
         document.getElementById('register').onclick = async () => {
-            const user = document.getElementById('u').value;
-            const pass = document.getElementById('p').value;
-            if(!user || !pass) return alert("Please fill all fields!");
-            
-            const { error } = await sb.from('users').insert([{ username: user, password: pass }]);
-            error ? alert("Error: " + error.message) : alert("Account Created Successfully!");
+            const { error } = await sb.from('users').insert([{ username: document.getElementById('u').value, password: document.getElementById('p').value }]);
+            error ? alert("Error: " + error.message) : alert("Account Created!");
         };
-
-        // Login Logic with Redirect
         document.getElementById('login').onclick = async () => {
-            const user = document.getElementById('u').value;
-            const pass = document.getElementById('p').value;
-            
-            const { data, error } = await sb.from('users').select('*').eq('username', user).eq('password', pass);
-            
-            if (error) {
-                alert("Error: " + error.message);
-            } else if (data.length > 0) {
-                alert("Login Success! Redirecting...");
-                window.location.href = "dashboard.html"; // यहाँ से डैशबोर्ड पर जाएगा
-            } else {
-                alert("Invalid Username or Password!");
-            }
+            const { data, error } = await sb.from('users').select('*').eq('username', document.getElementById('u').value).eq('password', document.getElementById('p').value);
+            if (data && data.length > 0) {
+                alert("Login Success!");
+                window.location.href = "dashboard.html";
+            } else alert("Invalid Login!");
         };
     </script>
 </body>
