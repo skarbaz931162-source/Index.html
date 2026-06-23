@@ -1,31 +1,22 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CN FIBER DASHBOARD</title>
+    <title>Dashboard</title>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
-        .card { background: #1e293b; padding: 25px; border-radius: 20px; margin: 20px auto; width: 90%; max-width: 400px; }
-        .btn-action { background: #22c55e; color: white; padding: 15px; border-radius: 10px; border: none; width: 100%; font-weight: bold; margin: 10px 0; cursor: pointer; }
-        .btn-logout { background: #ef4444; color: white; padding: 10px; border-radius: 10px; border: none; width: 50%; margin-top: 20px; cursor: pointer; }
+        body { background: #0f172a; color: white; text-align: center; padding: 20px; font-family: sans-serif; }
+        .card { background: #1e293b; padding: 25px; border-radius: 20px; margin: 20px 0; }
+        button { padding: 15px; margin: 10px 0; width: 100%; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        .btn-play { background: #22c55e; color: white; }
     </style>
 </head>
 <body>
-
-    <h1>CN FIBER NET</h1>
-    
+    <h1>CN LUDO HUB</h1>
     <div class="card">
-        <h3>Welcome User!</h3>
-        <p>Your connection status is: <span style="color: #22c55e;">Active</span></p>
-        <h2 style="color: gold;">Balance: ₹ 0</h2>
+        <h3>Wallet Balance</h3>
+        <h1 style="color: gold;">₹ 200.00</h1>
     </div>
-
-    <button class="btn-action">Check Usage</button>
-    <button class="btn-action">Recharge Now</button>
-    
-    <br>
-    <button class="btn-logout" onclick="window.location.href='index.html'">Logout</button>
-
+    <button class="btn-play">PLAY LUDO NOW</button>
+    <button onclick="window.location.href='index.html'" style="background:#ef4444; color:white;">Logout</button>
 </body>
 </html>
