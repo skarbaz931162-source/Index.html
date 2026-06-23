@@ -102,55 +102,53 @@
         </div>
 
     <script>
-        // Placeholder for core mechanics
-        async function handleRegister() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            const err = document.getElementById('auth-error');
-            if(!u || !p) { alert('Fill details'); return; }
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username: u, password: p})
-                });
-                const data = await res.json();
-                if(res.ok) {
-                    alert('Account Created Successfully! Please Login.');
-                } else {
-                    err.innerText = data.message || 'Registration failed';
-                    err.classList.remove('hidden');
-                }
-            } catch(e) {
-                alert('Server error!');
-                console.error(e);
-            }
+// Placeholder for core mechanics
+async function handleRegister() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const err = document.getElementById('auth-error');
+    if(!u || !p) { alert('Fill details'); return; }
+    try {
+        const res = await fetch(BACKEND_URL + '/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({username: u, password: p})
+        });
+        const data = await res.json();
+        if(res.ok) {
+            alert('Account Created Successfully! Please Login.');
+        } else {
+            err.innerText = data.message || 'Registration failed';
+            err.classList.remove('hidden');
         }
+    } catch(e) {
+        alert('Server error!');
+        console.error(e);
+    }
+}
 
-        async function handleLogin() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            const err = document.getElementById('auth-error');
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username: u, password: p})
-                });
-                const data = await res.json();
-                if(res.ok) {
-                    document.getElementById('auth-screen').classList.add('hidden');
-                    document.getElementById('dashboard-screen').classList.remove('hidden');
-                    document.getElementById('display-username').innerText = u;
-                    document.getElementById('user-coins').innerText = data.user.walletBalance || 0;
-                } else {
-                    err.innerText = data.message || 'Login failed';
-                    err.classList.remove('hidden');
-                }
-            } catch(e) {
-                alert('Server error!');
-            }
+async function handleLogin() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const err = document.getElementById('auth-error');
+    try {
+        const res = await fetch(BACKEND_URL + '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({username: u, password: p})
+        });
+        const data = await res.json();
+        if(res.ok) {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+            document.getElementById('display-username').innerText = u;
+            document.getElementById('user-coins').innerText = data.user.walletBalance || 0;
+        } else {
+            err.innerText = data.message || 'Login failed';
+            err.classList.remove('hidden');
         }
-    </script>
-</body>
-</html> 
+    } catch(e) {
+        alert('Server error!');
+    }
+}
+        
