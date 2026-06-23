@@ -6,66 +6,50 @@
     <title>CN Ludo - Play & Earn Master</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
-        .ludo-grid { display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(15, 1fr); width: 100%; aspect-ratio: 1; max-width: 380px; margin: 0 auto; border: 4px solid #1e293b; background-color: #fff; }
     </style>
 </head>
 <body>
 
     <div id="auth-screen" class="flex flex-col items-center justify-center min-h-screen px-4">
         <div class="bg-slate-900 border border-amber-500/30 rounded-2xl shadow-2xl p-8 w-full max-w-md text-center">
-            <h1 class="text-4xl font-extrabold text-amber-500 mb-2 tracking-wider">CN LUDO</h1>
+            <h1 class="text-4xl font-extrabold text-amber-500 mb-6">CN LUDO</h1>
             <input type="text" id="username" placeholder="Username" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 mb-4 text-white">
             <input type="password" id="password" placeholder="Password" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 mb-4 text-white">
             
-            <button onclick="handleLogin()" class="w-full bg-amber-500 py-3 rounded-xl font-bold mb-2 text-black">Login</button>
-            <button onclick="handleRegister()" class="w-full bg-slate-800 border border-slate-600 py-3 rounded-xl text-white">Create Account</button>
+            <button id="login-btn" class="w-full bg-amber-500 py-3 rounded-xl font-bold mb-2 text-black">Login</button>
+            <button id="register-btn" class="w-full bg-slate-800 border border-slate-600 py-3 rounded-xl text-white">Create Account</button>
         </div>
     </div>
 
     <script>
-        // 1. Supabase Setup
         const supabaseUrl = 'https://pubntihxkdwrgxaqumtj.supabase.co';
         const supabaseKey = 'sb_publishable_TzLg10jeLU6J8-wYsJ4oYg_UZL6iWgs';
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // 2. Register Function
-        async function handleRegister() {
+        // Event Listeners (ये बटन को काम करने के लिए मजबूर कर देंगे)
+        document.getElementById('register-btn').addEventListener('click', async () => {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            
-            if(!user || !pass) return alert("Please enter username and password");
-
             const { error } = await supabase.from('users').insert([{ username: user, password: pass }]);
-            
-            if (error) {
-                alert("Error: " + error.message);
-            } else {
-                alert("Account Created Successfully! Now Login.");
-            }
-        }
+            if (error) alert("Error: " + error.message);
+            else alert("Account Created!");
+        });
 
-        // 3. Login Function
-        async function handleLogin() {
+        document.getElementById('login-btn').addEventListener('click', async () => {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            
-            if(!user || !pass) return alert("Please enter username and password");
-
             const { data, error } = await supabase.from('users').select('*').eq('username', user).eq('password', pass);
             
-            if (error) {
-                alert("Error: " + error.message);
-            } else if (data && data.length > 0) {
+            if (error) alert("Error: " + error.message);
+            else if (data && data.length > 0) {
                 alert("Login Successful!");
-                document.getElementById('auth-screen').classList.add('hidden');
-                // यहाँ से आगे का गेम डैशबोर्ड का कोड आएगा
+                document.getElementById('auth-screen').style.display = 'none';
             } else {
                 alert("Invalid Username or Password!");
             }
-        }
+        });
     </script>
 </body>
 </html>
