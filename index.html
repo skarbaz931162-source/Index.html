@@ -1,21 +1,41 @@
-<script>
-    // सर्वर से जुड़ने के लिए यह सेटिंग सबसे बेस्ट है
-    const socket = io("https://ludo-game-sag8.onrender.com", {
-        transports: ['websocket'],
-        reconnection: true,
-        reconnectionAttempts: 5
-    });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CN LUDO HUB</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <style>
+        body { background: #0f172a; color: white; text-align: center; font-family: sans-serif; padding: 20px; margin: 0; }
+        .card { background: #1e293b; padding: 20px; border-radius: 15px; margin: 20px 0; border: 1px solid #334155; }
+        .btn { width: 100%; padding: 18px; margin: 10px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; color: white; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>CN LUDO HUB</h1>
+    <div class="card">
+        <h3>Wallet Balance</h3>
+        <h1 id="bal" style="color: gold;">₹ 200</h1>
+    </div>
     
-    socket.on('connect', () => {
-        console.log("Server se jud gaye!");
-    });
+    <button class="btn" style="background:#22c55e;" onclick="joinLobby()">JOIN LOBBY</button>
+    <button class="btn" style="background:#3b82f6;" onclick="window.location.reload()">REFRESH</button>
 
-    function joinLobby() {
-        if(socket.connected) {
+    <script>
+        // सर्वर कनेक्शन
+        const socket = io("https://ludo-game-sag8.onrender.com", {
+            transports: ['websocket']
+        });
+
+        socket.on('connect', () => {
+            console.log("Connected to server");
+        });
+
+        function joinLobby() {
             socket.emit('join_lobby', "Player_" + Math.floor(Math.random()*1000));
-            alert("Lobby me join ho gaye!");
-        } else {
-            alert("Server abhi busy hai, 5 second ruk kar try karo...");
+            // यहाँ आप कोई भी एक्शन डाल सकते हैं
+            console.log("Lobby request sent");
         }
-    }
-</script>
+    </script>
+</body>
+</html>
