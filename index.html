@@ -1,46 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CN LUDO Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <style>
-        body { background: #0f172a; color: white; padding: 20px; font-family: sans-serif; }
-        .req-card { background: #1e293b; padding: 15px; margin: 10px 0; border-radius: 10px; }
-        button { padding: 10px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        body { background: #0f172a; color: white; text-align: center; font-family: sans-serif; padding: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 15px; margin: 15px 0; border: 1px solid #334155; }
+        .btn { width: 100%; padding: 15px; margin: 8px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; color: white; }
     </style>
 </head>
 <body>
-    <h1>Admin Panel - Deposit Requests</h1>
-    <div id="requests"></div>
+    <h1>CN LUDO HUB</h1>
+    <div class="card">
+        <h3>Wallet Balance</h3>
+        <h1 id="bal" style="color: gold;">₹ 200</h1>
+    </div>
+    
+    <button class="btn" style="background:#22c55e;" onclick="joinLobby()">JOIN LOBBY</button>
+    <button class="btn" style="background:#3b82f6;" onclick="depositPage()">DEPOSIT</button>
+    <button class="btn" style="background:#ef4444;" onclick="logout()">LOGOUT</button>
 
     <script>
-        // अपना API URL (जो Render से मिला है)
-        const API_URL = "https://your-render-url.onrender.com";
+        // आपका सर्वर लिंक जो Render से मिला है
+        const socket = io("https://ludo-game-sag8.onrender.com");
+        
+        socket.on('connect', () => {
+            console.log("Connected to Game Server Successfully!");
+        });
 
-        async function fetchRequests() {
-            // यहाँ से आप पेंडिंग डिपॉजिट रिक्वेस्ट फेच करेंगे
-            const res = await fetch(`${API_URL}/api/admin/pending-deposits`);
-            const data = await res.json();
-            const div = document.getElementById('requests');
-            data.forEach(req => {
-                div.innerHTML += `
-                    <div class="req-card">
-                        <p>User: ${req.username} | Amount: ₹${req.amount}</p>
-                        <a href="${req.screenshotUrl}" target="_blank">View Screenshot</a>
-                        <button onclick="approve('${req._id}')" style="background:green; color:white;">Approve</button>
-                    </div>`;
-            });
+        function joinLobby() {
+            alert("Lobby connect ho rahi hai...");
+            socket.emit('join_lobby', "Player_" + Math.floor(Math.random()*1000));
         }
 
-        async function approve(id) {
-            await fetch(`${API_URL}/api/admin/approve-deposit`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ requestId: id, status: 'Approved' })
-            });
-            alert("Done!");
-            location.reload();
+        function depositPage() {
+            alert("Deposit section par ja rahe hain...");
         }
-        fetchRequests();
+
+        function logout() {
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
 </html>
