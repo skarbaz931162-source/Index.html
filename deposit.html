@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html>
+<head><style>body { background: #0f172a; color: white; text-align: center; padding: 20px; }</style></head>
 <body>
     <h2>Deposit Funds</h2>
-    <input type="number" id="amt" placeholder="Enter Amount">
-    <button onclick="submitDeposit()">Submit Payment</button>
-
-    <script>
-        function submitDeposit() {
-            let amount = document.getElementById('amt').value;
-            // यहाँ हम सर्वर को डेटा भेजेंगे
-            alert("Payment request of ₹" + amount + " sent to Admin!");
-        }
-    </script>
+    <input type="number" id="amt" placeholder="Enter Amount" style="padding:10px;">
+    <button onclick="alert('Request sent for ₹' + document.getElementById('amt').value)">SUBMIT</button>
+    <br><br>
+    <button onclick="window.location.href='index.html'">BACK HOME</button>
 </body>
 </html>
-
