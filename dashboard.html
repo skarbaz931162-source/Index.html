@@ -5,8 +5,8 @@
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <style>
         body { background: #0f172a; color: white; text-align: center; font-family: sans-serif; padding: 20px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 15px; margin: 15px 0; }
-        .btn { width: 100%; padding: 15px; margin: 8px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        .card { background: #1e293b; padding: 20px; border-radius: 15px; margin: 15px 0; border: 1px solid #334155; }
+        .btn { width: 100%; padding: 15px; margin: 8px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; color: white; }
     </style>
 </head>
 <body>
@@ -15,16 +15,31 @@
         <h3>Wallet Balance</h3>
         <h1 id="bal" style="color: gold;">₹ 200</h1>
     </div>
-    <button class="btn" style="background:#22c55e;" onclick="alert('Lobby Active!')">JOIN LOBBY</button>
-    <button class="btn" style="background:#3b82f6;" onclick="alert('Redirecting to Deposit...')">DEPOSIT</button>
-    <button class="btn" style="background:#ef4444;" onclick="window.location.href='index.html'">LOGOUT</button>
+    
+    <button class="btn" style="background:#22c55e;" onclick="joinLobby()">JOIN LOBBY</button>
+    <button class="btn" style="background:#3b82f6;" onclick="depositPage()">DEPOSIT</button>
+    <button class="btn" style="background:#ef4444;" onclick="logout()">LOGOUT</button>
 
     <script>
-        // यहाँ अपना Render वाला लिंक डालें (जैसे: https://your-app.onrender.com)
-        const socket = io("https://YOUR-RENDER-URL.onrender.com");
+        // आपका सर्वर लिंक जो Render से मिला है
+        const socket = io("https://ludo-game-sag8.onrender.com");
         
-        socket.on('connect', () => console.log("Connected to Game Server!"));
-        socket.on('lobby_broadcast', (data) => alert("New Challenge: " + data.message));
+        socket.on('connect', () => {
+            console.log("Connected to Game Server Successfully!");
+        });
+
+        function joinLobby() {
+            alert("Lobby connect ho rahi hai...");
+            socket.emit('join_lobby', "Player_" + Math.floor(Math.random()*1000));
+        }
+
+        function depositPage() {
+            alert("Deposit section par ja rahe hain...");
+        }
+
+        function logout() {
+            window.location.href = 'index.html';
+        }
     </script>
 </body>
 </html>
