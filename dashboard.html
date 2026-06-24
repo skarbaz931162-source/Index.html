@@ -2,21 +2,29 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <style>
-        body { background: #0f172a; color: white; text-align: center; padding: 20px; font-family: sans-serif; }
-        .card { background: #1e293b; padding: 25px; border-radius: 20px; margin: 20px 0; }
-        button { padding: 15px; margin: 10px 0; width: 100%; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-        .btn-play { background: #22c55e; color: white; }
+        body { background: #0f172a; color: white; text-align: center; font-family: sans-serif; padding: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 15px; margin: 15px 0; }
+        .btn { width: 100%; padding: 15px; margin: 8px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
     <h1>CN LUDO HUB</h1>
     <div class="card">
         <h3>Wallet Balance</h3>
-        <h1 style="color: gold;">₹ 200.00</h1>
+        <h1 id="bal" style="color: gold;">₹ 200</h1>
     </div>
-    <button class="btn-play">PLAY LUDO NOW</button>
-    <button onclick="window.location.href='index.html'" style="background:#ef4444; color:white;">Logout</button>
+    <button class="btn" style="background:#22c55e;" onclick="alert('Lobby Active!')">JOIN LOBBY</button>
+    <button class="btn" style="background:#3b82f6;" onclick="alert('Redirecting to Deposit...')">DEPOSIT</button>
+    <button class="btn" style="background:#ef4444;" onclick="window.location.href='index.html'">LOGOUT</button>
+
+    <script>
+        // यहाँ अपना Render वाला लिंक डालें (जैसे: https://your-app.onrender.com)
+        const socket = io("https://YOUR-RENDER-URL.onrender.com");
+        
+        socket.on('connect', () => console.log("Connected to Game Server!"));
+        socket.on('lobby_broadcast', (data) => alert("New Challenge: " + data.message));
+    </script>
 </body>
 </html>
