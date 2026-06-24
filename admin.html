@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head><style>body { background: #0f172a; color: white; text-align: center; padding: 20px; }</style></head>
+<head>
+    <style>
+        body { background: #0f172a; color: white; font-family: sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #334155; padding: 10px; text-align: center; }
+        th { background: #1e293b; }
+    </style>
+</head>
 <body>
-    <h1>Admin Panel</h1>
-    <div style="background:#334155; padding:20px;">
-        <p>Pending Requests: None</p>
-    </div>
+    <h1>Admin Panel: Deposit Requests</h1>
+    <table>
+        <thead><tr><th>Player</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody id="depositTable"></tbody>
+    </table>
     <br>
+    <button onclick="fetchDeposits()">Refresh Data</button>
     <button onclick="window.location.href='index.html'">BACK HOME</button>
+
+    <script>
+        async function fetchDeposits() {
+            // यह आपके सर्वर से डेटा उठाएगा
+            const res = await fetch('https://ludo-game-sag8.onrender.com/api/deposits');
+            const data = await res.json();
+            const table = document.getElementById('depositTable');
+            table.innerHTML = "";
+            data.forEach(item => {
+                table.innerHTML += `<tr><td>${item.player}</td><td>₹${item.amount}</td><td>${item.status}</td></tr>`;
+            });
+        }
+        fetchDeposits(); // पेज खुलते ही डेटा लोड करे
+    </script>
 </body>
 </html>
-
